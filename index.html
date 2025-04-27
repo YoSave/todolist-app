@@ -1,19 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>To-Do List</title>
-  <!-- PASTIKAN BARIS INI ADA dan PATH-nya BENAR -->
+  <title>To-Do List Canggih</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="loginContainer">
+    <h1>Login</h1>
+    <input type="text" id="usernameInput" placeholder="Masukkan nama..." />
+    <button id="loginBtn">Login</button>
+  </div>
+
+  <div class="container" id="todoContainer" style="display:none;">
     <h1>To-Do List</h1>
+    <div id="welcomeUser"></div>
     <input type="text" id="taskInput" placeholder="Tambahkan tugas baru..." />
     <button id="addTaskBtn">Tambah Tugas</button>
+    <button id="toggleDarkMode" class="dark-toggle">Toggle Dark Mode</button>
     <ul id="taskList"></ul>
+    <div id="achievementArea"></div>
   </div>
+
   <script src="app.js"></script>
 </body>
 </html>
