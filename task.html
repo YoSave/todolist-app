@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Tugas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <button onclick="goBack()">← Kembali</button>
+
+    <h1 id="taskTitle"></h1>
+    <textarea id="taskDesc" placeholder="Deskripsi tugas..."></textarea>
+    <input type="datetime-local" id="taskDeadline">
+
+    <div class="progressContainer">
+      <div id="progressBar"></div>
+    </div>
+
+    <button onclick="saveTask()">Simpan Perubahan</button>
+  </div>
+
+<script src="task.js"></script>
+</body>
+</html>
