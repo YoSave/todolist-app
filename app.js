@@ -109,6 +109,7 @@ function saveTasks() {
 }
 
 function checkAchievements() {
+  achievements = [];
   achievementList.innerHTML = '';
   if (tasks.length >= 5) {
     addAchievement('Menambahkan 5 tugas!');
