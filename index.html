@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Smart To-Do List</title>
+  <title>To-Do List Supercharged</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,31 +11,29 @@
   <div id="loginSection" class="container">
     <h1>Login</h1>
     <input type="text" id="usernameInput" placeholder="Masukkan nama kamu...">
-    <button id="loginBtn">Login</button>
+    <button id="loginBtn" class="btn">Login</button>
   </div>
 
-  <div id="mainApp" class="container" style="display: none;">
+  <div id="mainApp" class="container hidden">
     <div class="header">
       <h1 id="greeting"></h1>
-      <button id="toggleDarkMode">🌗 Mode</button>
+      <button id="toggleDarkMode" class="btn">Dark Mode</button>
     </div>
 
     <div class="taskInputArea">
-      <input type="text" id="taskInput" placeholder="Nama Tugas...">
-      <textarea id="descInput" placeholder="Deskripsi tugas..."></textarea>
+      <input type="text" id="taskInput" placeholder="Tugas baru...">
+      <textarea id="descInput" placeholder="Deskripsi tugas..." rows="2"></textarea>
       <input type="datetime-local" id="deadlineInput">
-      <button id="addTaskBtn">Tambah Tugas</button>
+      <button id="addTaskBtn" class="btn">Tambah Tugas</button>
     </div>
 
     <ul id="taskList" class="taskList"></ul>
 
     <div class="achievements">
-      <h2>Pencapaian:</h2>
+      <h2>Pencapaian</h2>
       <ul id="achievementList"></ul>
     </div>
   </div>
-
-  <audio id="deadlineSound" src="notification.mp3" preload="auto"></audio>
 
   <script src="app.js"></script>
 </body>
