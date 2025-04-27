@@ -1,41 +1,30 @@
-/* Reset */
+/* Reset dasar */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Warna Merah + Vermilion */
-:root {
-  --primary: #E34234;
-  --accent: #FF5733;
-  --bg-light: #f9f9f9;
-  --bg-dark: #1e1e1e;
-  --text-light: #333;
-  --text-dark: #f9f9f9;
-}
-
-/* Body */
 body {
   font-family: 'Arial', sans-serif;
-  background-color: var(--bg-light);
-  color: var(--text-light);
-  min-height: 100vh;
+  background-color: #fafafa;
+  color: #333;
+  height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding: 20px;
+  align-items: start;
+  padding-top: 40px;
 }
 
-/* Container */
+/* Container umum */
 .container {
-  background: white;
+  background: #fff;
   padding: 20px;
-  border-radius: 10px;
   width: 90%;
   max-width: 500px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-  animation: fadeIn 0.5s ease;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.5s ease-in;
 }
 
 /* Header */
@@ -43,98 +32,107 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+}
+
+/* Tombol umum */
+.btn {
+  background: linear-gradient(45deg, #ff4b2b, #ff7c00);
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  margin-top: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(255, 120, 0, 0.7);
 }
 
 /* Input Area */
 .taskInputArea input,
 .taskInputArea textarea {
   width: 100%;
-  margin: 10px 0;
-  padding: 10px;
-  font-size: 1rem;
-  border: 2px solid var(--primary);
-  border-radius: 5px;
+  padding: 8px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
 }
 
-.taskInputArea button {
-  width: 100%;
-  padding: 12px;
-  background: var(--accent);
-  color: white;
-  font-size: 1.1rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.taskInputArea button:hover {
-  background: var(--primary);
-  transform: scale(1.05);
-}
-
-/* Task List */
+/* List Tugas */
 .taskList {
   list-style: none;
   margin-top: 20px;
 }
 
 .taskItem {
-  background: #fff3f2;
-  border: 2px solid var(--primary);
+  background: #ffe5d9;
+  margin-bottom: 10px;
+  padding: 12px;
   border-radius: 8px;
-  margin-bottom: 15px;
-  padding: 15px;
   display: flex;
   flex-direction: column;
-  animation: slideIn 0.5s ease;
+  transition: background 0.3s;
 }
 
+.taskItem:hover {
+  background: #ffd1b3;
+}
+
+/* Task Info */
 .taskTop {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.taskDeadline {
+.taskTitle {
+  font-weight: bold;
+}
+
+.deadline {
   font-size: 0.8rem;
-  color: #666;
+  color: #888;
 }
 
-.taskDesc {
-  margin-top: 10px;
-  font-size: 0.9rem;
-  color: #555;
+/* Edit/Save button */
+.editBtn {
+  margin-top: 5px;
+  font-size: 0.8rem;
+  background: #ff4b2b;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  padding: 6px;
+  cursor: pointer;
 }
 
-/* Dark Mode */
+.editBtn:hover {
+  background: #e63b19;
+}
+
+/* Mode Gelap */
 body.dark {
-  background: var(--bg-dark);
-  color: var(--text-dark);
+  background-color: #121212;
+  color: #f0f0f0;
 }
 
 body.dark .container {
-  background: #333;
+  background-color: #1e1e1e;
 }
 
 body.dark .taskItem {
-  background: #444;
-  border-color: var(--accent);
+  background-color: #333;
 }
 
-/* Achievements */
-.achievements {
-  margin-top: 30px;
+.hidden {
+  display: none;
 }
 
-/* Animations */
+/* Animasi dasar */
 @keyframes fadeIn {
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
-
-@keyframes slideIn {
-  from {transform: translateX(-50px); opacity: 0;}
-  to {transform: translateX(0); opacity: 1;}
+  from { opacity: 0; transform: translateY(-20px);}
+  to { opacity: 1; transform: translateY(0);}
 }
