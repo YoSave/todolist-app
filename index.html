@@ -1,16 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List Canggih</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
+
   <div id="loginSection" class="container">
     <h1>Login</h1>
-    <input type="text" id="usernameInput" placeholder="Masukkan nama kamu..." />
+    <input type="text" id="usernameInput" placeholder="Masukkan nama kamu...">
     <button id="loginBtn">Login</button>
   </div>
 
   <div id="mainApp" class="container" style="display: none;">
-    <h1 id="greeting">To-Do List</h1>
-    <input type="text" id="taskInput" placeholder="Tambahkan tugas baru..." />
-    <button id="addTaskBtn">Tambah Tugas</button>
-    <ul id="taskList"></ul>
+    <div class="header">
+      <h1 id="greeting"></h1>
+      <button id="toggleDarkMode">Dark Mode</button>
+    </div>
+
+    <div class="taskInputArea">
+      <input type="text" id="taskInput" placeholder="Tambahkan tugas baru...">
+      <button id="addTaskBtn">Tambah Tugas</button>
+    </div>
+
+    <ul id="taskList" class="taskList"></ul>
+
+    <div class="achievements">
+      <h2>Pencapaian:</h2>
+      <ul id="achievementList"></ul>
+    </div>
   </div>
 
   <script src="app.js"></script>
+
 </body>
+</html>
