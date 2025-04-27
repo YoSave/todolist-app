@@ -2,31 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Detail Tugas</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Edit Tugas</title>
+  <link rel="stylesheet" href="task.css">
 </head>
 <body>
 
-<div class="container">
-  <div class="header">
-    <a href="index.html" class="back-button">⬅ Kembali</a>
-    <h1>Detail Tugas</h1>
-  </div>
+  <div class="task-detail-container">
+    <h1 id="taskTitle"></h1>
 
-  <div id="taskDetail" class="task-detail">
-    <input type="text" id="editTitle" placeholder="Judul Tugas">
-    <textarea id="editDescription" placeholder="Deskripsi Tugas"></textarea>
-    <input type="datetime-local" id="editDeadline">
-    <div class="audio-section">
-      <label>Upload Alarm (max 200MB):</label>
-      <input type="file" id="alarmAudio" accept="audio/*">
+    <label for="taskDescription">Deskripsi:</label>
+    <textarea id="taskDescription" rows="5"></textarea>
+
+    <label for="taskProgress">Progress (%):</label>
+    <input type="range" id="taskProgress" min="0" max="100">
+
+    <div class="progress-bar">
+      <div id="progressFill"></div>
     </div>
-    <button id="saveTaskBtn">Simpan Perubahan</button>
-    <button id="deleteTaskBtn" class="danger">Hapus Tugas Ini</button>
-  </div>
 
-</div>
+    <button id="saveBtn">Simpan Perubahan</button>
+  </div>
 
 <script src="task.js"></script>
 </body>
