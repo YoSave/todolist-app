@@ -1,115 +1,134 @@
-// Ambil elemen
 const loginSection = document.getElementById('loginSection');
 const mainApp = document.getElementById('mainApp');
 const usernameInput = document.getElementById('usernameInput');
 const loginBtn = document.getElementById('loginBtn');
 const greeting = document.getElementById('greeting');
-const toggleDarkMode = document.getElementById('toggleDarkMode');
 const taskInput = document.getElementById('taskInput');
 const descInput = document.getElementById('descInput');
 const deadlineInput = document.getElementById('deadlineInput');
 const addTaskBtn = document.getElementById('addTaskBtn');
 const taskList = document.getElementById('taskList');
 const achievementList = document.getElementById('achievementList');
-const deadlineSound = document.getElementById('deadlineSound');
+const toggleDarkMode = document.getElementById('toggleDarkMode');
 
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-let darkMode = false;
+let username = localStorage.getItem('username') || '';
 
-// Login
+// Login System
 loginBtn.addEventListener('click', () => {
-  const username = usernameInput.value.trim();
+  username = usernameInput.value.trim();
   if (username) {
-    loginSection.style.display = 'none';
-    mainApp.style.display = 'block';
-    greeting.textContent = `Halo, ${username}!`;
+    localStorage.setItem('username', username);
+    loadApp();
   }
 });
 
-// Toggle Dark Mode
-toggleDarkMode.addEventListener('click', () => {
-  document.body.classList.toggle('dark');
-  darkMode = !darkMode;
-});
+function loadApp() {
+  loginSection.classList.add('hidden');
+  mainApp.classList.remove('hidden');
+  greeting.textContent = `Hai, ${username}!`;
+  renderTasks();
+}
 
 // Tambah Tugas
 addTaskBtn.addEventListener('click', () => {
   const title = taskInput.value.trim();
-  const desc = descInput.value.trim();
+  const description = descInput.value.trim();
   const deadline = deadlineInput.value;
+  if (!title) return alert("Isi judul tugas dulu, bro!");
 
-  if (!title || !deadline) return alert('Judul dan deadline wajib diisi!');
-
-  tasks.push({
+  const newTask = {
     id: Date.now(),
     title,
-    desc,
+    description,
     deadline,
     completed: false
-  });
-
+  };
+  tasks.push(newTask);
   saveTasks();
+  clearInputs();
   renderTasks();
-  taskInput.value = '';
-  descInput.value = '';
-  deadlineInput.value = '';
 });
 
-// Simpan ke LocalStorage
+// Simpan dan Render
 function saveTasks() {
   localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
-// Render tugas
+function clearInputs() {
+  taskInput.value = '';
+  descInput.value = '';
+  deadlineInput.value = '';
+}
+
+// Render List
 function renderTasks() {
   taskList.innerHTML = '';
   tasks.forEach(task => {
     const li = document.createElement('li');
     li.className = 'taskItem';
-    li.draggable = true;
+    li.setAttribute('draggable', true);
 
-    li.innerHTML = `
-      <div class="taskTop">
-        <span>${task.title}</span>
-        <button onclick="deleteTask(${task.id})">🗑️</button>
-      </div>
-      <div class="taskDeadline">Deadline: ${new Date(task.deadline).toLocaleString()}</div>
-      <div class="taskDesc">${task.desc}</div>
-    `;
+    const taskTop = document.createElement('div');
+    taskTop.className = 'taskTop';
 
-    taskList.appendChild(li);
+    const title = document.createElement('span');
+    title.className = 'taskTitle';
+    title.textContent = task.title;
 
-    // Alarm jika deadline mendekat (5 menit lagi)
-    const timeLeft = new Date(task.deadline) - new Date();
-    if (timeLeft < 5 * 60 * 1000 && timeLeft > 0) {
-      deadlineSound.play();
-    }
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Hapus';
+    deleteBtn.className = 'editBtn';
+    deleteBtn.onclick = () => {
+      tasks = tasks.filter(t => t.id !== task.id);
+      saveTasks();
+      renderTasks();
+    };
 
-    // Drag events
-    li.addEventListener('dragstart', (e) => {
-      e.dataTransfer.setData('id', task.id);
+    taskTop.appendChild(title);
+    taskTop.appendChild(deleteBtn);
+
+    const deadline = document.createElement('div');
+    deadline.className = 'deadline';
+    deadline.textContent = `Deadline: ${task.deadline ? new Date(task.deadline).toLocaleString() : 'Belum diatur'}`;
+
+    const desc = document.createElement('div');
+    desc.className = 'descArea';
+    desc.innerHTML = `<p>${task.description || 'Deskripsi kosong'}</p>`;
+
+    desc.addEventListener('click', () => {
+      const newDesc = prompt('Edit deskripsi:', task.description);
+      if (newDesc !== null) {
+        task.description = newDesc;
+        saveTasks();
+        renderTasks();
+      }
     });
+
+    li.appendChild(taskTop);
+    li.appendChild(deadline);
+    li.appendChild(desc);
+    taskList.appendChild(li);
   });
+  updateAchievements();
 }
 
-// Hapus tugas
-function deleteTask(id) {
-  tasks = tasks.filter(task => task.id !== id);
-  saveTasks();
-  renderTasks();
-  checkAchievements();
-}
-
-// Cek Pencapaian
-function checkAchievements() {
+// Achievement
+function updateAchievements() {
   achievementList.innerHTML = '';
-
-  if (tasks.length === 0) {
+  if (tasks.length >= 5) {
     const li = document.createElement('li');
-    li.textContent = 'Selamat! Semua tugas selesai!';
+    li.textContent = 'Wah, sudah buat 5 tugas! Hebat!';
     achievementList.appendChild(li);
   }
 }
 
-// Load saat mulai
-renderTasks();
+// Dark Mode
+toggleDarkMode.addEventListener('click', () => {
+  document.body.classList.toggle('dark');
+});
+
+// Auto-load kalau user sudah login
+if (username) {
+  loadApp();
+}
