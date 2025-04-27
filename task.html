@@ -8,19 +8,25 @@
 </head>
 <body>
 
-  <div class="container">
-    <button onclick="goBack()">← Kembali</button>
-
-    <h1 id="taskTitle"></h1>
-    <textarea id="taskDesc" placeholder="Deskripsi tugas..."></textarea>
-    <input type="datetime-local" id="taskDeadline">
-
-    <div class="progressContainer">
-      <div id="progressBar"></div>
-    </div>
-
-    <button onclick="saveTask()">Simpan Perubahan</button>
+<div class="container">
+  <div class="header">
+    <a href="index.html" class="back-button">⬅ Kembali</a>
+    <h1>Detail Tugas</h1>
   </div>
+
+  <div id="taskDetail" class="task-detail">
+    <input type="text" id="editTitle" placeholder="Judul Tugas">
+    <textarea id="editDescription" placeholder="Deskripsi Tugas"></textarea>
+    <input type="datetime-local" id="editDeadline">
+    <div class="audio-section">
+      <label>Upload Alarm (max 200MB):</label>
+      <input type="file" id="alarmAudio" accept="audio/*">
+    </div>
+    <button id="saveTaskBtn">Simpan Perubahan</button>
+    <button id="deleteTaskBtn" class="danger">Hapus Tugas Ini</button>
+  </div>
+
+</div>
 
 <script src="task.js"></script>
 </body>
