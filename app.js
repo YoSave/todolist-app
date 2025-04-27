@@ -1,122 +1,77 @@
-const loginSection = document.getElementById('loginSection');
-const mainApp = document.getElementById('mainApp');
-const taskDetail = document.getElementById('taskDetail');
+document.addEventListener('DOMContentLoaded', () => {
+  const addTaskBtn = document.getElementById('addTaskBtn');
+  const taskInput = document.getElementById('taskInput');
+  const deadlineInput = document.getElementById('deadlineInput');
+  const categoryInput = document.getElementById('categoryInput');
+  const taskList = document.getElementById('taskList');
+  const toggleDarkModeBtn = document.getElementById('toggleDarkMode');
 
-const usernameInput = document.getElementById('usernameInput');
-const loginBtn = document.getElementById('loginBtn');
-const greeting = document.getElementById('greeting');
-const toggleDarkMode = document.getElementById('toggleDarkMode');
+  let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
-const taskInput = document.getElementById('taskInput');
-const taskDescInput = document.getElementById('taskDescInput');
-const deadlineInput = document.getElementById('deadlineInput');
-const addTaskBtn = document.getElementById('addTaskBtn');
-const taskList = document.getElementById('taskList');
-
-const backBtn = document.getElementById('backBtn');
-const taskDetailTitle = document.getElementById('taskDetailTitle');
-const taskDetailDesc = document.getElementById('taskDetailDesc');
-const taskDetailDeadline = document.getElementById('taskDetailDeadline');
-const progressBar = document.getElementById('progressBar');
-
-let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-
-loginBtn.addEventListener('click', () => {
-  const username = usernameInput.value.trim();
-  if (username) {
-    loginSection.style.display = 'none';
-    mainApp.style.display = 'block';
-    greeting.textContent = `Halo, ${username}!`;
+  function saveTasks() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
   }
-});
 
-toggleDarkMode.addEventListener('click', () => {
-  document.body.classList.toggle('dark');
-});
+  function renderTasks() {
+    taskList.innerHTML = '';
+    tasks.forEach(task => {
+      const li = document.createElement('li');
+      li.classList.add('task-item');
+      li.innerHTML = `
+        <div class="task-content">
+          <strong>${task.title}</strong> <br>
+          <small>Deadline: ${new Date(task.deadline).toLocaleString()}</small> 
+          <div class="progress-bar">
+            <div class="progress" style="width:${calculateProgress(task.deadline)}%"></div>
+          </div>
+        </div>
+        <button class="delete-btn" data-id="${task.id}">❌</button>
+      `;
+      li.addEventListener('click', (e) => {
+        if (e.target.classList.contains('delete-btn')) return;
+        window.location.href = `task.html?id=${task.id}`;
+      });
+      taskList.appendChild(li);
+    });
+  }
 
-addTaskBtn.addEventListener('click', () => {
-  const title = taskInput.value.trim();
-  const description = taskDescInput.value.trim();
-  const deadline = deadlineInput.value;
+  function calculateProgress(deadline) {
+    const totalTime = new Date(deadline) - new Date();
+    const progress = Math.max(0, 100 - (totalTime / (1000 * 60 * 60 * 24)) * 100);
+    return Math.min(100, progress);
+  }
 
-  if (!title || !deadline) return alert("Judul dan deadline wajib diisi!");
+  addTaskBtn.addEventListener('click', () => {
+    if (taskInput.value.trim() === '' || !deadlineInput.value) return alert('Lengkapi semua data!');
+    
+    const newTask = {
+      id: Date.now(),
+      title: taskInput.value.trim(),
+      deadline: deadlineInput.value,
+      category: categoryInput.value,
+      description: '',
+      alarmSet: false
+    };
 
-  const newTask = {
-    id: Date.now(),
-    title,
-    description,
-    deadline,
-    createdAt: new Date().toISOString()
-  };
-
-  tasks.push(newTask);
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-  renderTasks();
-});
-
-// Ganti renderTasks()
-
-function renderTasks() {
-  taskList.innerHTML = '';
-  tasks.forEach(task => {
-    const li = document.createElement('li');
-    li.innerHTML = `
-      <a href="task.html?id=${task.id}">${task.title}</a>
-      <button onclick="deleteTask(${task.id})">Hapus</button>
-    `;
-    if (isDeadlineSoon(task.deadline)) li.classList.add('deadline-soon');
-    taskList.appendChild(li);
+    tasks.push(newTask);
+    saveTasks();
+    renderTasks();
+    taskInput.value = '';
+    deadlineInput.value = '';
   });
-}
 
+  taskList.addEventListener('click', (e) => {
+    if (e.target.classList.contains('delete-btn')) {
+      const id = parseInt(e.target.getAttribute('data-id'));
+      tasks = tasks.filter(task => task.id !== id);
+      saveTasks();
+      renderTasks();
+    }
+  });
 
-function deleteTask(id) {
-  tasks = tasks.filter(t => t.id !== id);
-  localStorage.setItem('tasks', JSON.stringify(tasks));
+  toggleDarkModeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+  });
+
   renderTasks();
-}
-
-function openTask(id) {
-  const task = tasks.find(t => t.id === id);
-  if (!task) return;
-
-  mainApp.style.display = 'none';
-  taskDetail.style.display = 'block';
-
-  taskDetailTitle.textContent = task.title;
-  taskDetailDesc.textContent = task.description;
-  taskDetailDeadline.textContent = `Deadline: ${new Date(task.deadline).toLocaleString()}`;
-  
-  updateProgressBar(task);
-  setInterval(() => updateProgressBar(task), 60000);
-}
-
-backBtn.addEventListener('click', () => {
-  taskDetail.style.display = 'none';
-  mainApp.style.display = 'block';
 });
-
-function updateProgressBar(task) {
-  const now = new Date();
-  const created = new Date(task.createdAt);
-  const deadline = new Date(task.deadline);
-
-  const total = deadline - created;
-  const done = now - created;
-
-  let percentage = (done / total) * 100;
-  if (percentage > 100) percentage = 100;
-  if (percentage < 0) percentage = 0;
-
-  progressBar.style.width = `${percentage}%`;
-}
-
-function isDeadlineSoon(deadline) {
-  const now = new Date();
-  const dl = new Date(deadline);
-  const diff = (dl - now) / (1000 * 60 * 60);
-  return diff <= 1; // kurang dari 1 jam
-}
-
-// First render
-renderTasks();
