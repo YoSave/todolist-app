@@ -29,7 +29,16 @@
       <button id="addTaskBtn">Tambah Tugas</button>
     </div>
 
-    <ul id="taskList" class="taskList"></ul>
+    <!-- Ganti bagian taskList rendering (HTML utama) -->
+
+<ul id="taskList" class="taskList"></ul>
+
+<!-- Dalam JS rendernya akan jadi: -->
+<li>
+  <a href="task.html?id=TASK_ID">Judul Tugas</a>
+  <button onclick="deleteTask(TASK_ID)">Hapus</button>
+</li>
+
 
     <div class="achievements">
       <h2>Pencapaian:</h2>
