@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To-Do List Canggih</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart To-Do List</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,11 +17,12 @@
   <div id="mainApp" class="container" style="display: none;">
     <div class="header">
       <h1 id="greeting"></h1>
-      <button id="toggleDarkMode">Dark Mode</button>
+      <button id="toggleDarkMode">🌗 Mode</button>
     </div>
 
     <div class="taskInputArea">
-      <input type="text" id="taskInput" placeholder="Tambahkan tugas baru...">
+      <input type="text" id="taskInput" placeholder="Nama Tugas...">
+      <textarea id="descInput" placeholder="Deskripsi tugas..."></textarea>
       <input type="datetime-local" id="deadlineInput">
       <button id="addTaskBtn">Tambah Tugas</button>
     </div>
@@ -34,7 +35,8 @@
     </div>
   </div>
 
-  <script src="app.js"></script>
+  <audio id="deadlineSound" src="notification.mp3" preload="auto"></audio>
 
+  <script src="app.js"></script>
 </body>
 </html>
