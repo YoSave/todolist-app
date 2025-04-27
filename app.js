@@ -54,19 +54,21 @@ addTaskBtn.addEventListener('click', () => {
   renderTasks();
 });
 
+// Ganti renderTasks()
+
 function renderTasks() {
   taskList.innerHTML = '';
   tasks.forEach(task => {
     const li = document.createElement('li');
     li.innerHTML = `
-      <span>${task.title}</span>
-      <button onclick="openTask(${task.id})">Detail</button>
+      <a href="task.html?id=${task.id}">${task.title}</a>
       <button onclick="deleteTask(${task.id})">Hapus</button>
     `;
     if (isDeadlineSoon(task.deadline)) li.classList.add('deadline-soon');
     taskList.appendChild(li);
   });
 }
+
 
 function deleteTask(id) {
   tasks = tasks.filter(t => t.id !== id);
