@@ -1,58 +1,59 @@
-// Dapatkan ID dari URL
-const params = new URLSearchParams(window.location.search);
-const taskId = Number(params.get('id'));
+document.addEventListener('DOMContentLoaded', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const taskId = parseInt(urlParams.get('id'));
+  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
-const titleEl = document.getElementById('taskTitle');
-const descEl = document.getElementById('taskDesc');
-const deadlineEl = document.getElementById('taskDeadline');
-const progressBar = document.getElementById('progressBar');
+  const editTitle = document.getElementById('editTitle');
+  const editDescription = document.getElementById('editDescription');
+  const editDeadline = document.getElementById('editDeadline');
+  const saveTaskBtn = document.getElementById('saveTaskBtn');
+  const deleteTaskBtn = document.getElementById('deleteTaskBtn');
+  const alarmAudio = document.getElementById('alarmAudio');
 
-let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-let currentTask = tasks.find(t => t.id === taskId);
+  let currentTask = tasks.find(t => t.id === taskId);
+  if (!currentTask) {
+    alert('Tugas tidak ditemukan!');
+    window.location.href = 'index.html';
+    return;
+  }
 
-if (!currentTask) {
-  alert("Tugas tidak ditemukan!");
-  window.location.href = "index.html";
-}
+  // Load data ke form
+  editTitle.value = currentTask.title;
+  editDescription.value = currentTask.description || '';
+  editDeadline.value = currentTask.deadline ? new Date(currentTask.deadline).toISOString().slice(0, 16) : '';
 
-function renderTask() {
-  titleEl.textContent = currentTask.title;
-  descEl.value = currentTask.description || '';
-  deadlineEl.value = currentTask.deadline || '';
-  updateProgress();
-}
+  saveTaskBtn.addEventListener('click', () => {
+    currentTask.title = editTitle.value.trim();
+    currentTask.description = editDescription.value.trim();
+    currentTask.deadline = editDeadline.value;
 
-function updateProgress() {
-  const now = new Date();
-  const created = new Date(currentTask.createdAt);
-  const deadline = new Date(currentTask.deadline);
+    if (alarmAudio.files.length > 0) {
+      const file = alarmAudio.files[0];
+      if (file.size <= 200 * 1024 * 1024) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          currentTask.alarmSound = e.target.result;
+          saveAndRedirect();
+        };
+        reader.readAsDataURL(file);
+      } else {
+        alert('File terlalu besar! Maksimal 200MB.');
+      }
+    } else {
+      saveAndRedirect();
+    }
+  });
 
-  const total = deadline - created;
-  const done = now - created;
+  deleteTaskBtn.addEventListener('click', () => {
+    if (confirm('Yakin mau hapus tugas ini?')) {
+      const updatedTasks = tasks.filter(t => t.id !== taskId);
+      localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+      window.location.href = 'index.html';
+    }
+  });
 
-  let percentage = (done / total) * 100;
-  if (percentage > 100) percentage = 100;
-  if (percentage < 0) percentage = 0;
-
-  progressBar.style.width = `${percentage}%`;
-}
-
-// Simpan perubahan
-function saveTask() {
-  currentTask.description = descEl.value;
-  currentTask.deadline = deadlineEl.value;
-
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-  alert("Perubahan disimpan!");
-  window.location.href = "index.html";
-}
-
-function goBack() {
-  window.location.href = "index.html";
-}
-
-// Update progress tiap menit
-setInterval(updateProgress, 60000);
-
-// Render pertama
-renderTask();
+  function saveAndRedirect() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    window.location.href = 'index.html';
+  }
+});
