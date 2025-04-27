@@ -1,4 +1,10 @@
-/* style.css */
+/* === style.css === */
+
+:root {
+  --primary-red: #e53935;
+  --vermillion: #ff5722;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -13,6 +19,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: background 0.5s, color 0.5s;
 }
 
 body.dark {
@@ -27,6 +34,12 @@ body.dark {
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   width: 100%;
   max-width: 400px;
+  animation: fadeIn 0.8s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 body.dark .container {
@@ -50,6 +63,9 @@ body.dark .container {
 .taskInputArea input, .taskInputArea button {
   padding: 10px;
   font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: all 0.3s;
 }
 
 #taskInput, #deadlineInput {
@@ -57,15 +73,16 @@ body.dark .container {
 }
 
 #addTaskBtn {
-  background-color: #4CAF50;
+  background: linear-gradient(45deg, var(--primary-red), var(--vermillion));
   border: none;
   color: white;
   cursor: pointer;
-  transition: 0.3s;
+  transition: background 0.3s, transform 0.2s;
 }
 
 #addTaskBtn:hover {
-  background-color: #45a049;
+  background: linear-gradient(45deg, var(--vermillion), var(--primary-red));
+  transform: scale(1.05);
 }
 
 #taskList {
@@ -82,6 +99,7 @@ body.dark .container {
   justify-content: space-between;
   align-items: center;
   position: relative;
+  flex-direction: column;
 }
 
 body.dark .taskList li {
@@ -93,18 +111,25 @@ body.dark .taskList li {
 }
 
 .deleteBtn {
-  background-color: #f44336;
+  background: var(--primary-red);
   border: none;
   padding: 5px 10px;
   color: white;
   border-radius: 4px;
   cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  margin-top: 10px;
+}
+
+.deleteBtn:hover {
+  background: var(--vermillion);
+  transform: scale(1.05);
 }
 
 .deadline {
   font-size: 0.8rem;
   color: #666;
-  margin-left: 10px;
+  margin-top: 5px;
 }
 
 .expired {
@@ -112,6 +137,25 @@ body.dark .taskList li {
   color: #ff5555;
 }
 
-.achievements {
-  margin-top: 20px;
+.achievements h2 {
+  color: var(--primary-red);
+}
+
+.task-desc {
+  font-size: 0.9rem;
+  margin-top: 5px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.5s ease;
+  color: #aaa;
+}
+
+.task-desc.active {
+  max-height: 100px;
+  opacity: 1;
+}
+
+body.dark .task-desc {
+  color: #ccc;
 }
