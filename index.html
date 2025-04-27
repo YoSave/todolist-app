@@ -5,40 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>To-Do List Canggih</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
 
-  <!-- Login Section -->
-  <div id="loginSection" class="container">
-    <h1>Login</h1>
-    <input type="text" id="usernameInput" placeholder="Masukkan nama kamu...">
-    <button id="loginBtn">Login</button>
-  </div>
-
-  <!-- Main App -->
-  <div id="mainApp" class="container" style="display: none;">
+  <div id="mainApp" class="container">
     <div class="header">
-      <h1 id="greeting"></h1>
-      <button id="toggleDarkMode">Dark Mode</button>
+      <img src="assets/default-logo.png" alt="Logo" class="logo">
+      <h1>To-Do List</h1>
+      <button id="toggleDarkMode">🌙</button>
     </div>
 
     <div class="taskInputArea">
-      <input type="text" id="taskInput" placeholder="Judul tugas...">
-      <textarea id="taskDescInput" placeholder="Deskripsi tugas..."></textarea>
+      <input type="text" id="taskInput" placeholder="Tambahkan tugas baru...">
+      <select id="categoryInput">
+        <option value="penting">Penting</option>
+        <option value="biasa">Biasa</option>
+        <option value="mendesak">Mendesak</option>
+      </select>
       <input type="datetime-local" id="deadlineInput">
       <button id="addTaskBtn">Tambah Tugas</button>
     </div>
 
-    <!-- Ganti bagian taskList rendering (HTML utama) -->
-
-<ul id="taskList" class="taskList"></ul>
-
-<!-- Dalam JS rendernya akan jadi: -->
-<li>
-  <a href="task.html?id=TASK_ID">Judul Tugas</a>
-  <button onclick="deleteTask(TASK_ID)">Hapus</button>
-</li>
-
+    <ul id="taskList" class="taskList"></ul>
 
     <div class="achievements">
       <h2>Pencapaian:</h2>
@@ -46,18 +35,6 @@
     </div>
   </div>
 
-  <!-- Detail Task Page -->
-  <div id="taskDetail" class="container" style="display: none;">
-    <button id="backBtn">← Kembali</button>
-    <h1 id="taskDetailTitle"></h1>
-    <p id="taskDetailDesc"></p>
-    <p id="taskDetailDeadline"></p>
-    <div class="progressContainer">
-      <div id="progressBar"></div>
-    </div>
-    <button id="editTaskBtn">Edit Tugas</button>
-  </div>
-
-  <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
