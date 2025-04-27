@@ -31,7 +31,6 @@ body.dark {
 
 body.dark .container {
   background: #1e1e1e;
-  color: #f4f4f9;
 }
 
 .header {
@@ -43,18 +42,21 @@ body.dark .container {
 
 .taskInputArea {
   display: flex;
+  gap: 10px;
   margin-bottom: 20px;
+  flex-direction: column;
 }
 
-#taskInput {
-  flex: 1;
+.taskInputArea input, .taskInputArea button {
   padding: 10px;
   font-size: 1rem;
 }
 
+#taskInput, #deadlineInput {
+  width: 100%;
+}
+
 #addTaskBtn {
-  padding: 10px;
-  margin-left: 10px;
   background-color: #4CAF50;
   border: none;
   color: white;
@@ -71,7 +73,7 @@ body.dark .container {
   min-height: 100px;
 }
 
-#taskList li {
+.taskList li {
   background: #eee;
   margin: 10px 0;
   padding: 10px;
@@ -79,17 +81,14 @@ body.dark .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  cursor: grab;
-  transition: transform 0.2s;
-  color: inherit;
+  position: relative;
 }
 
-body.dark #taskList li {
+body.dark .taskList li {
   background: #333;
-  color: #f4f4f9;
 }
 
-#taskList li.dragging {
+.taskList li.dragging {
   opacity: 0.5;
 }
 
@@ -100,6 +99,17 @@ body.dark #taskList li {
   color: white;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.deadline {
+  font-size: 0.8rem;
+  color: #666;
+  margin-left: 10px;
+}
+
+.expired {
+  text-decoration: line-through;
+  color: #ff5555;
 }
 
 .achievements {
