@@ -1,76 +1,75 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const addTaskBtn = document.getElementById('addTaskBtn');
-  const taskInput = document.getElementById('taskInput');
-  const deadlineInput = document.getElementById('deadlineInput');
-  const categoryInput = document.getElementById('categoryInput');
-  const taskList = document.getElementById('taskList');
-  const toggleDarkModeBtn = document.getElementById('toggleDarkMode');
+document.addEventListener("DOMContentLoaded", () => {
+  const taskInput = document.getElementById("taskInput");
+  const categoryInput = document.getElementById("categoryInput");
+  const deadlineInput = document.getElementById("deadlineInput");
+  const addTaskBtn = document.getElementById("addTaskBtn");
+  const taskList = document.getElementById("taskList");
 
-  let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
   function saveTasks() {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }
+
+  function createTaskElement(task) {
+    const li = document.createElement("li");
+    li.className = "task-item";
+    li.innerHTML = `
+      <div class="task-content">
+        <span class="task-title">${task.title}</span>
+        <small class="task-deadline">${new Date(task.deadline).toLocaleString()}</small>
+      </div>
+      <button class="delete-btn">❌</button>
+    `;
+
+    // Klik task untuk buka task.html
+    li.querySelector(".task-content").addEventListener("click", () => {
+      window.location.href = `task.html?id=${task.id}`;
+    });
+
+    // Hapus task
+    li.querySelector(".delete-btn").addEventListener("click", () => {
+      tasks = tasks.filter(t => t.id !== task.id);
+      saveTasks();
+      renderTasks();
+    });
+
+    return li;
   }
 
   function renderTasks() {
-    taskList.innerHTML = '';
+    taskList.innerHTML = "";
     tasks.forEach(task => {
-      const li = document.createElement('li');
-      li.classList.add('task-item');
-      li.innerHTML = `
-        <div class="task-content">
-          <strong>${task.title}</strong> <br>
-          <small>Deadline: ${new Date(task.deadline).toLocaleString()}</small> 
-          <div class="progress-bar">
-            <div class="progress" style="width:${calculateProgress(task.deadline)}%"></div>
-          </div>
-        </div>
-        <button class="delete-btn" data-id="${task.id}">❌</button>
-      `;
-      li.addEventListener('click', (e) => {
-        if (e.target.classList.contains('delete-btn')) return;
-        window.location.href = `task.html?id=${task.id}`;
-      });
+      const li = createTaskElement(task);
       taskList.appendChild(li);
     });
   }
 
-  function calculateProgress(deadline) {
-    const totalTime = new Date(deadline) - new Date();
-    const progress = Math.max(0, 100 - (totalTime / (1000 * 60 * 60 * 24)) * 100);
-    return Math.min(100, progress);
-  }
+  addTaskBtn.addEventListener("click", () => {
+    const title = taskInput.value.trim();
+    const category = categoryInput.value;
+    const deadline = deadlineInput.value;
 
-  addTaskBtn.addEventListener('click', () => {
-    if (taskInput.value.trim() === '' || !deadlineInput.value) return alert('Lengkapi semua data!');
-    
-    const newTask = {
-      id: Date.now(),
-      title: taskInput.value.trim(),
-      deadline: deadlineInput.value,
-      category: categoryInput.value,
-      description: '',
-      alarmSet: false
+    if (!title || !deadline) {
+      alert("Isi semua kolom!");
+      return;
+    }
+
+    const task = {
+      id: Date.now().toString(),
+      title,
+      category,
+      deadline,
+      description: "",
+      progress: 0
     };
 
-    tasks.push(newTask);
+    tasks.push(task);
     saveTasks();
     renderTasks();
-    taskInput.value = '';
-    deadlineInput.value = '';
-  });
 
-  taskList.addEventListener('click', (e) => {
-    if (e.target.classList.contains('delete-btn')) {
-      const id = parseInt(e.target.getAttribute('data-id'));
-      tasks = tasks.filter(task => task.id !== id);
-      saveTasks();
-      renderTasks();
-    }
-  });
-
-  toggleDarkModeBtn.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
+    taskInput.value = "";
+    deadlineInput.value = "";
   });
 
   renderTasks();
