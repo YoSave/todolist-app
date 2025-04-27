@@ -31,6 +31,7 @@ body.dark {
 
 body.dark .container {
   background: #1e1e1e;
+  color: #f4f4f9;
 }
 
 .header {
@@ -70,7 +71,7 @@ body.dark .container {
   min-height: 100px;
 }
 
-.taskList li {
+#taskList li {
   background: #eee;
   margin: 10px 0;
   padding: 10px;
@@ -80,9 +81,15 @@ body.dark .container {
   align-items: center;
   cursor: grab;
   transition: transform 0.2s;
+  color: inherit;
 }
 
-.taskList li.dragging {
+body.dark #taskList li {
+  background: #333;
+  color: #f4f4f9;
+}
+
+#taskList li.dragging {
   opacity: 0.5;
 }
 
